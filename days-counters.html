@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date Counter</title>
+    <style>
+      body {
+        background-color: #191919;
+        color: #f2eee4;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      #content {
+        text-align: center;
+      }
+      #counter {
+        font-size: 2rem;
+        margin-top: 2rem;
+      }
+      #daysDiff {
+        display: block;
+        width: fit-content;
+        background-color: #f2eee4;
+        color: #191919;
+        padding: 10px;
+        border-radius: 8px;
+        margin-top: 10px;
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <div id="counter">Calculating...</div>
+    </div>
+    <script>
+      function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return "";
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+      function updateCounter() {
+        var urlDate = getParameterByName("date");
+        if (urlDate) {
+          var currentDate = new Date();
+          var providedDate = new Date(urlDate);
+          var timeDiff = Math.abs(currentDate - providedDate);
+          var daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+          document.getElementById("counter").textContent =
+            "Days since " + urlDate;
+
+          var daysDiffElement = document.createElement("div");
+          daysDiffElement.id = "daysDiff";
+          daysDiffElement.textContent = daysDiff;
+
+          document.getElementById("counter").appendChild(daysDiffElement);
+        } else {
+          document.getElementById("counter").textContent =
+            "No valid date provided in URL.";
+        }
+      }
+
+      updateCounter();
+    </script>
+  </body>
+</html>
